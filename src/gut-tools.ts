@@ -9,21 +9,12 @@ class GodotDebugConfiguration implements vscode.DebugConfiguration{
     public name = "GUT Debugger";
     public request = "launch";
     public project = "${workspaceFolder}";
-    public port = 6007;
-    public address = "127.0.0.1";
-    public launch_game_instance = true;
-    public launch_scene = false;
+    public debug_collisons = false;
+    public debug_paths = false;
+    public debug_navigate = false;
     public additional_options = "";
 
-    public useGodotExtensionSettings(){
-        this.port = utils.getGodotConfigurationValue("lsp.serverPort", this.port);
-        this.address = utils.getGodotConfigurationValue("lsp.serverHost", this.address);
-    }
-
-    public constructor(config: vscode.DebugConfiguration) {
-        this.port = config?.port || this.port;
-        this.address = config?.address || this.address;
-    }
+    public useGodotExtensionSettings(){}
 }
 
 
@@ -164,7 +155,8 @@ export class GutTools{
     
                 if (godotDebugConfig) {
                     // Modify the debug configuration to include the GUT script and additional options
-                    let config = new GodotDebugConfiguration(godotDebugConfig);
+                    let config = new GodotDebugConfiguration();
+                    config.project = godotDebugConfig.project;
                     config.additional_options = ` -s \"res://addons/gut/${gutScript}\" `;
                     config.additional_options += options;
     
